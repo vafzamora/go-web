@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
+const filename = "./todo.db"
+
 func OpenConnection() *sql.DB {
-	db, err := sql.Open("mysql", "root:password@(127.0.0.1:3306)/mysql?parseTime=true")
+	db, err := sql.Open("sqlite3", filename)
 
 	logError(err)
 
@@ -35,11 +37,8 @@ func InitDb() {
 	defer CloseConnection(db)
 
 	var err error
-	createDbCommand := "CREATE DATABASE IF NOT EXISTS todo"
-	_, err = db.Exec(createDbCommand)
-	logError(err)
 
-	createTableCommand := "CREATE TABLE IF NOT EXISTS todo.tasks (`id` INT AUTO_INCREMENT, `title` VARCHAR(50) NOT NULL, `iscompleted` BOOL, PRIMARY KEY (ID));"
+	createTableCommand := "CREATE TABLE IF NOT EXISTS todo.tasks (id INT AUTO_INCREMENT, title VARCHAR(50) NOT NULL, iscompleted BOOL, PRIMARY KEY (ID));"
 	_, err = db.Exec(createTableCommand)
 	logError(err)
 
