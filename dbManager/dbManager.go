@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const filename = "./todo.db"
+const filename = "todo.db"
 
 func OpenConnection() *sql.DB {
 	db, err := sql.Open("sqlite3", filename)
@@ -38,14 +38,14 @@ func InitDb() {
 
 	var err error
 
-	createTableCommand := "CREATE TABLE IF NOT EXISTS todo.tasks (id INT AUTO_INCREMENT, title VARCHAR(50) NOT NULL, iscompleted BOOL, PRIMARY KEY (ID));"
+	createTableCommand := "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, title VARCHAR(50) NOT NULL, iscompleted BOOL);"
 	_, err = db.Exec(createTableCommand)
 	logError(err)
 
 	var hasTasks bool
 
-	if err := db.QueryRow("SELECT EXISTS(SELECT * FROM todo.tasks)").Scan(&hasTasks); err == nil && !hasTasks {
-		createTasksCommand := "INSERT todo.tasks (title, iscompleted) VALUES (?,?)"
+	if err := db.QueryRow("SELECT EXISTS(SELECT * FROM tasks)").Scan(&hasTasks); err == nil && !hasTasks {
+		createTasksCommand := "INSERT INTO tasks (title, iscompleted) VALUES (?,?)"
 		for i := 1; i <= 5; i++ {
 			_, err := db.Exec(createTasksCommand, fmt.Sprintf("Task %v", i), 0)
 			logError(err)

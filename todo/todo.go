@@ -16,7 +16,7 @@ func GetTasks() []Task {
 	db := dbManager.OpenConnection()
 	defer dbManager.CloseConnection(db)
 
-	rows, err := db.Query("SELECT id, title, iscompleted FROM todo.tasks")
+	rows, err := db.Query("SELECT id, title, iscompleted FROM tasks")
 	logError(err)
 	defer rows.Close()
 
@@ -36,7 +36,7 @@ func GetTask(id int) Task {
 	defer dbManager.CloseConnection(db)
 
 	var t Task
-	err := db.QueryRow("SELECT id, title, iscompleted FROM todo.tasks WHERE id=?", id).Scan(&t.Id, &t.Title, &t.IsCompleted)
+	err := db.QueryRow("SELECT id, title, iscompleted FROM tasks WHERE id=?", id).Scan(&t.Id, &t.Title, &t.IsCompleted)
 	logError(err)
 
 	return t
@@ -46,7 +46,7 @@ func CreateTask(newTask *Task) {
 	db := dbManager.OpenConnection()
 	defer dbManager.CloseConnection(db)
 
-	result, err := db.Exec("INSERT todo.tasks (title, iscompleted) VALUES (?,?)", newTask.Title, newTask.IsCompleted)
+	result, err := db.Exec("INSERT INTO tasks (title, iscompleted) VALUES (?,?)", newTask.Title, newTask.IsCompleted)
 	logError(err)
 
 	id, err := result.LastInsertId()
@@ -59,7 +59,7 @@ func UpdateTask(task *Task) {
 	db := dbManager.OpenConnection()
 	defer dbManager.CloseConnection(db)
 
-	_, err := db.Exec("UPDATE todo.tasks SET title = ?, iscompleted = ? WHERE id = ?", task.Title, task.IsCompleted, task.Id)
+	_, err := db.Exec("UPDATE tasks SET title = ?, iscompleted = ? WHERE id = ?", task.Title, task.IsCompleted, task.Id)
 	logError(err)
 }
 
@@ -67,7 +67,7 @@ func DeleteTask(id int) {
 	db := dbManager.OpenConnection()
 	defer dbManager.CloseConnection(db)
 
-	_, err := db.Exec("DELETE FROM todo.tasks WHERE id = ?", id)
+	_, err := db.Exec("DELETE FROM tasks WHERE id = ?", id)
 	logError(err)
 }
 
