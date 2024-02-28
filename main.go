@@ -11,22 +11,10 @@ import (
 )
 
 func main() {
-
 	dbManager.InitDb()
 
 	router := mux.NewRouter()
-	//router.Use(trailingSlashRemovalMiddleware)
 	todo.MapTodoHandlers(router)
-
-	// r.HandleFunc("/books/{title}/page/{page}", func(w http.ResponseWriter, r *http.Request) {
-	// 	vars := mux.Vars(r)
-	// 	title := vars["title"]
-	// 	page := vars["page"]
-	// 	fmt.Fprintf(w, "You've requested the book: %s on page %s\n", title, page)
-	// })
-
-	fs := http.FileServer(http.Dir("static/"))
-	router.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Welcome to my website!")
