@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"example.com/go-web/dbManager"
-	"example.com/go-web/todo"
+	"example.com/todo-api/dbManager"
+	"example.com/todo-api/todo"
 	"github.com/gorilla/mux"
 )
 

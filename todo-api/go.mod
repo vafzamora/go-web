@@ -1,4 +1,4 @@
-module example.com/go-web
+module example.com/todo-api
 
 go 1.22.0
 

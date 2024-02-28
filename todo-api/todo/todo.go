@@ -3,7 +3,7 @@ package todo
 import (
 	"log"
 
-	"example.com/go-web/dbManager"
+	"example.com/todo-api/dbManager"
 )
 
 type Task struct {
