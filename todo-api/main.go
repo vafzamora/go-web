@@ -10,6 +10,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const listenUrl string = ":8080"
+
 func main() {
 	dbManager.InitDb()
 
@@ -20,8 +22,8 @@ func main() {
 		fmt.Fprint(w, "Welcome to my website!")
 	})
 
-	fmt.Println("Start Listen")
-	if err := http.ListenAndServe(":8080", trailingSlashRemovalMiddleware(router)); err != nil {
+	fmt.Println("Listening on: ", listenUrl)
+	if err := http.ListenAndServe(listenUrl, trailingSlashRemovalMiddleware(router)); err != nil {
 		fmt.Println(err)
 	}
 }
