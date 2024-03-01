@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"strings"
 )
 
 type Task struct {
@@ -13,8 +15,17 @@ type Task struct {
 	IsCompleted bool   `json:"iscompleted"`
 }
 
+var apiBaseAddress string = "http://localhost:8080"
+
+func init() {
+	if tmp := os.Getenv("TODOAPI_BASEADDRESS"); tmp != "" {
+		apiBaseAddress = strings.TrimSuffix(tmp, "/")
+	}
+	fmt.Printf("API base address: %s\n", apiBaseAddress)
+}
+
 func GetTasks() []Task {
-	response, err := http.Get("http://localhost:8080/todo/tasks")
+	response, err := http.Get(fmt.Sprintf("%s/todo/tasks", apiBaseAddress))
 
 	if err != nil {
 		fmt.Println(err)

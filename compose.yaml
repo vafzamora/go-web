@@ -1,0 +1,13 @@
+services:
+  app:
+    build: ./todo-app
+    ports:
+      - "8090:8090"
+    depends_on:
+      - api
+    environment:
+      - TODOAPI_BASEADDRESS=http://api:8080/
+  api:
+    build: ./todo-api
+    ports: 
+      - "8080:8080"
